@@ -1,0 +1,401 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Discover Your Strengths</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400..700&display=swap">
+<style>
+/* Layout: one narrow column, one section per screen. Theme colours appear only in the results. */
+:root{
+  --bg:#F2F4F1; --surface:#FFFFFF; --fg:#17211C; --muted:#56635B; --line:#D3DAD4; --sel:#E2ECE4; --onfg:#F2F4F1;
+  --tS:62%; --tL:40%;
+  --c-care:hsl(350 var(--tS) var(--tL));
+  --c-lead:hsl(22 var(--tS) var(--tL));
+  --c-teach:hsl(42 var(--tS) var(--tL));
+  --c-hands:hsl(98 var(--tS) var(--tL));
+  --c-inv:hsl(166 var(--tS) var(--tL));
+  --c-tech:hsl(202 var(--tS) var(--tL));
+  --c-biz:hsl(250 var(--tS) var(--tL));
+  --c-make:hsl(300 var(--tS) var(--tL));
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"Figtree","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1411; --surface:#151D18; --fg:#E9F0EB; --muted:#98A69D; --line:#2A352E; --sel:#1D2B23; --onfg:#0E1411;
+    --tL:64%; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1411; --surface:#151D18; --fg:#E9F0EB; --muted:#98A69D; --line:#2A352E; --sel:#1D2B23; --onfg:#0E1411;
+  --tL:64%; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 1rem/1.55 var(--body);margin:0;padding-inline:16px;padding-block:24px 56px}
+.wrap{max-width:640px;margin-inline:auto}
+.eyebrow{font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 14px}
+h1{font:750 clamp(2.1rem,9vw,3.25rem)/1.02 var(--display);letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+h2{font:700 1.6rem/1.15 var(--display);letter-spacing:-.01em;margin:0 0 6px;text-wrap:balance}
+.lead{color:var(--muted);margin:0 0 22px;max-width:60ch}
+.prog{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:0 0 26px}
+.prog span{height:5px;border-radius:3px;background:var(--line)}
+.prog span.on{background:var(--fg)}
+fieldset{border:0;margin:0 0 30px;padding:0;min-width:0}
+legend{font:650 1.125rem/1.3 var(--display);padding:0;margin-bottom:4px;text-wrap:balance}
+.hint{color:var(--muted);font-size:.9rem;margin:0 0 10px}
+.opts{display:grid;gap:8px}
+.opt{position:relative;display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);cursor:pointer;min-width:0}
+.opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.box{flex:none;width:20px;height:20px;margin-top:2px;border:2px solid var(--muted);border-radius:6px;display:grid;place-items:center}
+.box.radio{border-radius:50%}
+.opt input:checked + .box{background:var(--fg);border-color:var(--fg)}
+.opt input:checked + .box::after{content:"";width:6px;height:10px;border:solid var(--onfg);border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.opt input:checked + .box.radio::after{width:8px;height:8px;border:0;border-radius:50%;background:var(--onfg);transform:none}
+.opt:has(input:checked){border-color:var(--fg);background:var(--sel)}
+.opt input:focus-visible + .box{outline:3px solid var(--fg);outline-offset:3px}
+.opt input:disabled ~ .txt{opacity:.45}
+.opt:has(input:disabled){cursor:not-allowed}
+.txt{min-width:0;overflow-wrap:anywhere}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+button.opt{font:inherit;color:inherit;text-align:left;width:100%}
+button.opt .badge{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--muted);display:grid;place-items:center;font:700 .85rem var(--display)}
+button.opt[aria-pressed="true"]{border-color:var(--fg);background:var(--sel)}
+button.opt[aria-pressed="true"] .badge{background:var(--fg);color:var(--onfg);border-color:var(--fg)}
+button.opt:disabled{opacity:.5;cursor:not-allowed}
+button.opt small{display:block;color:var(--muted);font-size:.875rem}
+button:focus-visible{outline:3px solid var(--fg);outline-offset:3px}
+label.field{display:block;font-weight:600;margin:0 0 6px}
+input[type=text],textarea{width:100%;font:inherit;color:var(--fg);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:11px 13px}
+textarea{min-height:92px;resize:vertical}
+input[type=text]:focus-visible,textarea:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.field-gap{margin-bottom:22px}
+.nav{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:8px}
+.btn{font:650 1rem var(--body);border-radius:999px;padding:13px 24px;border:1.5px solid var(--fg);cursor:pointer;background:transparent;color:var(--fg)}
+.btn.pri{background:var(--fg);color:var(--onfg)}
+.btn:focus-visible{outline:3px solid var(--fg);outline-offset:3px}
+.note{border-top:1px solid var(--line);margin-top:30px;padding-top:14px;color:var(--muted);font-size:.9rem}
+/* results */
+.res{border-top:1px solid var(--line);padding:22px 0}
+.res h3{font:700 1.35rem/1.2 var(--display);margin:0 0 4px;display:flex;gap:12px;align-items:baseline}
+.res .n{font:800 2.2rem/1 var(--display);color:var(--c)}
+.res p{margin:6px 0}
+.res .sub{color:var(--muted)}
+.try{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px}
+.try div{border-top:3px solid var(--c);padding-top:8px}
+.try span{font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.try p{margin:2px 0 0}
+.bars{display:grid;gap:9px;margin:10px 0 0}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) 3rem;gap:4px 10px;align-items:center}
+.bar b{font-weight:600;grid-column:1/-1}
+.bar i{display:block;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar i u{display:block;height:100%;background:var(--c);border-radius:5px;text-decoration:none}
+.bar em{font-style:normal;font-variant-numeric:tabular-nums;color:var(--muted);text-align:right;font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 0;padding:0;list-style:none}
+.chips li{border:1.5px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.92rem;background:var(--surface)}
+h4{font:650 1.05rem var(--display);margin:26px 0 4px}
+details{margin:12px 0}
+summary{cursor:pointer;font-weight:600}
+.share textarea{min-height:200px;font-size:.9rem}
+.sharebar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:10px}
+.sharebar .opt{padding:9px 12px}
+.status{color:var(--muted);font-size:.9rem;min-height:1.4em;margin:6px 0 0}
+@media (prefers-reduced-motion:no-preference){.opt,.btn{transition:background .12s,border-color .12s}}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow" id="label">Ages 13 to 16 · About 15 minutes</p>
+  <h1>Discover Your Strengths</h1>
+  <div class="prog" id="prog" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <main id="view"></main>
+</div>
+
+<script>
+(function(){
+/*SCORING*/
+var THEMES=['care','lead','tech','inv','make','hands','teach','biz'];
+var DONE=[
+['care','Stuck up for someone who was being treated unfairly'],
+['care','Helped a friend or family member through a hard time'],
+['lead','Organised a group, club, server, event or game night'],
+['lead','Made a plan for other people and got them to follow it'],
+['tech','Built, coded, modded or set up something that works'],
+['tech','Fixed a device, app, game or setting that was broken'],
+['inv','Researched something properly because I wanted the real answer'],
+['inv','Tested something step by step to work out why it was not working'],
+['make','Made something creative and finished it: art, video, music, writing or design'],
+['make','Redesigned or customised something to look or sound better'],
+['hands','Built, repaired, cooked, grew or made something physical'],
+['hands','Spent time outdoors learning or doing something practical'],
+['teach','Taught someone a skill or helped them learn a game or subject'],
+['teach','Wrote or recorded instructions for someone else'],
+['biz','Sold, traded or swapped something, or ran a money-making idea'],
+['biz','Talked someone into trying or buying something I believed in']];
+var ITEM_THEME=DONE.map(function(d){return d[0]});
+var PAIRS=[['care','lead'],['tech','inv'],['make','hands'],['teach','biz'],['lead','tech'],['inv','make'],['hands','teach'],['biz','care']];
+function score(S){
+  var t={};THEMES.forEach(function(k){t[k]=0});
+  ['a1','a2','a3'].forEach(function(g){(S.multi[g]||[]).forEach(function(k){if(k in t)t[k]+=1})});
+  (S.multi.done||[]).forEach(function(id){var k=ITEM_THEME[+id];if(k)t[k]+=2});
+  (S.rank||[]).forEach(function(k,i){if(k in t)t[k]+=3-i});
+  for(var i=0;i<PAIRS.length;i++){var k=S.one['pair'+i];if(k in t)t[k]+=1}
+  return t;
+}
+function topThemes(S,n){
+  var t=score(S);
+  return THEMES.map(function(k,i){return {k:k,i:i,s:t[k],r:(S.rank||[]).indexOf(k)}})
+    .filter(function(x){return x.s>0})
+    .sort(function(a,b){return b.s-a.s||(a.r<0?9:a.r)-(b.r<0?9:b.r)||a.i-b.i})
+    .slice(0,n);
+}
+/*END SCORING*/
+
+var NAME={care:'Helping & standing up for people',lead:'Organising & leading',tech:'Building technology',inv:'Investigating & figuring things out',make:'Making & designing',hands:'Hands-on & outdoors',teach:'Teaching & explaining',biz:'Business & ideas'};
+var BLURB={
+ care:'Noticing who needs support and caring about what is fair.',
+ lead:'Getting people and plans moving in the same direction.',
+ tech:'Making programs and devices work, and working out how they are put together.',
+ inv:'Following clues, testing ideas and not stopping until it makes sense.',
+ make:'Turning ideas into something people can see, hear or read.',
+ hands:'Learning by building, fixing, growing or doing.',
+ teach:'Making hard things clear so other people get it.',
+ biz:'Spotting what people want and working out how to make it happen.'};
+var CAREERS={
+ care:'Community work, health, teaching, law and advocacy.',
+ lead:'Events, project management, community management, public service.',
+ tech:'Software, games, engineering, IT, cybersecurity.',
+ inv:'Research, science, data, software testing, security.',
+ make:'Graphic and UX design, film, animation, music, writing.',
+ hands:'Trades, engineering, food, sport science, the environment.',
+ teach:'Education, coaching, training, communications.',
+ biz:'Starting a business, marketing, finance, sales.'};
+var TRY={
+ care:['Write a one-page guide to making newcomers feel welcome in a group. Ask two people what they think.','Volunteer for a few hours at a local community group or animal shelter, with an adult.'],
+ lead:['Plan an online game night with a schedule and a job for everyone.','Plan a real family event with a budget and a timeline, then run it.'],
+ tech:['Build a simple alarm or reaction game in the micro:bit simulator.','With an adult, open an old unplugged device and sketch how its parts connect.'],
+ inv:['Pick one question, find three sources and write what they agree and disagree on.','Run a small count or survey near you (birds, traffic, pets) and chart what you find.'],
+ make:['Redesign a poster, logo or banner for a brief you set yourself.','Fill a page with sketches, write a short tune or a one-page story, then show someone.'],
+ hands:['Watch someone do a trade or craft, then list what you would need to try it.','Fix, build or grow something real: a bike repair, a garden bed, a simple shelf.'],
+ teach:['Record a three-step how-to for something you know well.','Teach a younger sibling or friend a skill in three steps and ask what was unclear.'],
+ biz:['Invent a product or service and write down who would pay for it and why.','Price a pretend market stall: your costs, your price, and how many you would need to sell.']};
+var LVL=['Not yet. I would like to try it.','I mostly use, play or watch.','I have made or changed something.','I have taken responsibility for something.'];
+var NEXT=['Try one small experiment below.','Make one small thing in this area.','Finish something and show it to one person.','You have already done this for real. Keep a note of what you did.'];
+var SAY={care:'Help someone who is struggling',lead:'Organise the whole project',tech:'Build the thing',inv:'Find out why it works',make:'Design how it looks and feels',hands:'Make it with my hands',teach:'Teach other people how to do it',biz:'Work out how to sell it'};
+var AQ=[
+ {g:'a1',q:'When I have free time and nobody is telling me what to do, I most enjoy…',o:{care:'Helping or looking out for someone',lead:'Organising a group, a plan or an event',tech:'Building something, or working out how a device or program works',inv:'Digging into a question until I understand it',make:'Making something: art, music, writing, video or design',hands:'Doing something practical with my hands or outdoors',teach:'Showing someone how to do something',biz:'Coming up with an idea I could sell or promote'}},
+ {g:'a2',q:'With a whole free afternoon, I would probably choose…',o:{care:'Spending time with someone who needs company or support',lead:'Getting friends together and sorting out who does what',tech:'Taking something apart, coding or tinkering',inv:'Researching a topic I am curious about',make:'Drawing, filming, composing or writing',hands:'Building, fixing, cooking, gardening or being outside',teach:'Explaining or coaching someone through a skill',biz:'Planning a way to earn money or run a small shop'}},
+ {g:'a3',q:'I lose track of time when I am…',o:{care:'Listening to someone or sorting out a problem between people',lead:'Running or planning something with other people',tech:'Getting a technical thing to finally work',inv:'Following a trail of clues or facts',make:'Lost in a creative project',hands:'Working on something physical',teach:'Helping someone finally get it',biz:'Working out how an idea could pay for itself'}}];
+var STYLE=[
+ {g:'s1',q:'I do my best work…',o:['Alone','With one friend','In a small team','In a big group','It depends on the task']},
+ {g:'s2',q:'I like projects that come with…',o:['Clear steps to follow','A loose brief I can shape myself','A mix of both']},
+ {g:'s3',q:'I would rather…',o:['Do a lot in short bursts','Stay with one thing for weeks','Mix the two']},
+ {g:'s4',q:'I like feedback…',o:['Straight away','When I have finished','Only if I ask']}];
+var MOTIV=['Seeing myself improve','Being recognised by other people','Having freedom to choose','Helping someone','Making or finishing something','Discovering something new'];
+var FRUST=['Boring, repetitive tasks','Rules that do not make sense','Not knowing what to do','People being unfair','Having no say in decisions','Things being too easy or too hard'];
+var ONLINE=['Talking and hanging out with people','Running, organising or moderating something','Making things: mods, bots, art, videos, builds','Working out how games, apps or servers work','Competing or playing to get better','Watching or following content'];
+var WORDS=[
+ ['w1','Something you have made, fixed, organised or helped with that you are proud of. What did you do?'],
+ ['w2','What do friends or family ask you for help with?'],
+ ['w3','Something you would like to try, even if you would be bad at it at first.'],
+ ['w4','Something you would like to learn that does not involve a screen.'],
+ ['w5','If you could improve one thing in a game, a server or the real world, what would it be?'],
+ ['w6','What would make learning a new skill actually fun for you?']];
+var MAX={a1:2,a2:2,a3:2,motiv:2,frust:2};
+
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x}return a}
+var ORD={a:[shuf(THEMES),shuf(THEMES),shuf(THEMES)],done:shuf(DONE.map(function(_,i){return i})),rank:shuf(THEMES),flip:PAIRS.map(function(){return Math.random()<.5})};
+function fresh(){return {multi:{},one:{},rank:[],txt:{},share:false}}
+var S=fresh(), step=0, confirmClear=false;
+var view=document.getElementById('view');
+
+function has(g,v){return (S.multi[g]||[]).indexOf(String(v))>=0}
+function opt(type,g,v,label){
+  var checked=type==='checkbox'?has(g,v):S.one[g]===String(v);
+  return '<label class="opt"><input type="'+type+'" data-t="'+(type==='checkbox'?'multi':'radio')+'" data-g="'+g+'" name="'+g+'" value="'+v+'"'+(checked?' checked':'')+'><span class="box '+(type==='radio'?'radio':'')+'"></span><span class="txt">'+label+'</span></label>';
+}
+function group(g,legend,hint,type,items){
+  return '<fieldset><legend>'+legend+'</legend>'+(hint?'<p class="hint">'+hint+'</p>':'')+'<div class="opts">'+items.map(function(x){return opt(type,g,x[0],x[1])}).join('')+'</div></fieldset>';
+}
+function nav(back,next,nextLabel){
+  return '<div class="nav">'+(back?'<button class="btn" type="button" data-act="back">Back</button>':'<span></span>')+'<button class="btn pri" type="button" data-act="next">'+nextLabel+'</button></div>';
+}
+
+function vIntro(){
+  return '<h2>Find out what you are good at and what you might love</h2>'+
+  '<p class="lead">This is not a test. There are no right or wrong answers, and nobody is grading you. It looks at what you enjoy, what you have actually done and how you like to work. Some questions are about gaming and Discord. Most are about everything else too.</p>'+
+  '<p class="lead">Your answers stay on this page. When you finish, you see your results first and you choose what to share with anyone else.</p>'+
+  '<p class="lead">Skip any question you are unsure about. It takes about 15 minutes.</p>'+
+  nav(false,true,'Start');
+}
+function vFree(){
+  return '<h2>Free time</h2><p class="lead">Think about what you choose when nobody is telling you what to do.</p>'+
+  AQ.map(function(q,qi){return group(q.g,q.q,'Choose up to two.','checkbox',ORD.a[qi].map(function(k){return [k,q.o[k]]}))}).join('')+
+  nav(true,true,'Next');
+}
+function vDone(){
+  return '<h2>Things you have done</h2><p class="lead">Tick anything that is true, on or off a screen. Only tick what you really did.</p>'+
+  group('done','Have you…','','checkbox',ORD.done.map(function(i){return [i,DONE[i][1]]}))+
+  nav(true,true,'Next');
+}
+function vTop(){
+  var btns=ORD.rank.map(function(k){
+    return '<button type="button" class="opt" data-act="rank" data-k="'+k+'" aria-pressed="false"><span class="badge"></span><span class="txt">'+NAME[k]+'<small>'+BLURB[k]+'</small></span></button>';
+  }).join('');
+  return '<h2>Your top three</h2><p class="lead">Pick the three things you would most like to get really good at. Tap them in order, best first.</p>'+
+  '<fieldset><legend>If I could get really good at something…</legend><div class="opts" id="rankbtns">'+btns+'</div></fieldset><div id="levels"></div>'+
+  nav(true,true,'Next');
+}
+function paintRank(){
+  var bs=view.querySelectorAll('[data-act="rank"]');
+  for(var i=0;i<bs.length;i++){
+    var b=bs[i],ix=S.rank.indexOf(b.dataset.k);
+    b.setAttribute('aria-pressed',ix>=0?'true':'false');
+    b.querySelector('.badge').textContent=ix>=0?String(ix+1):'';
+    b.disabled=ix<0&&S.rank.length>=3;
+  }
+  var lv=document.getElementById('levels');
+  if(!lv)return;
+  lv.innerHTML=S.rank.map(function(k){
+    return group('lvl_'+k,'How far have you gone with “'+NAME[k]+'”?','','radio',LVL.map(function(t,i){return [i,t]}));
+  }).join('');
+}
+function vPairs(){
+  var out='<h2>Either or</h2><p class="lead">Both might be true. Pick the one that sounds more like you.</p>';
+  PAIRS.forEach(function(p,i){
+    var ks=ORD.flip[i]?[p[1],p[0]]:[p[0],p[1]];
+    out+='<fieldset><legend>I would rather…</legend><div class="pair">'+ks.map(function(k){return opt('radio','pair'+i,k,SAY[k])}).join('')+'</div></fieldset>';
+  });
+  return out+nav(true,true,'Next');
+}
+function vStyle(){
+  return '<h2>How you like to work</h2><p class="lead">These do not change your results. They help shape the projects that would suit you.</p>'+
+  STYLE.map(function(q){return group(q.g,q.q,'','radio',q.o.map(function(t,i){return [i,t]}))}).join('')+
+  group('motiv','What makes me want to keep going with something?','Choose up to two.','checkbox',MOTIV.map(function(t,i){return [i,t]}))+
+  group('frust','What frustrates me most?','Choose up to two.','checkbox',FRUST.map(function(t,i){return [i,t]}))+
+  nav(true,true,'Next');
+}
+function vWords(){
+  return '<h2>In your own words</h2><p class="lead">This is the most useful part. Write as much or as little as you like.</p>'+
+  group('online','What do I mostly do online?','Tick any that fit.','checkbox',ONLINE.map(function(t,i){return [i,t]}))+
+  '<div class="field-gap"><label class="field" for="t_games">Which games or apps do I spend the most time on?</label><input type="text" id="t_games" data-t="text" data-g="games" value="'+esc(S.txt.games||'')+'"></div>'+
+  WORDS.map(function(w){return '<div class="field-gap"><label class="field" for="t_'+w[0]+'">'+w[1]+'</label><textarea id="t_'+w[0]+'" data-t="text" data-g="'+w[0]+'">'+esc(S.txt[w[0]]||'')+'</textarea></div>'}).join('')+
+  nav(true,true,'See my snapshot');
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function pick(g,list){return (S.multi[g]||[]).map(function(i){return list[+i]}).filter(Boolean)}
+function summary(){
+  var t=score(S),top=topThemes(S,3),L=[];
+  L.push('Strengths snapshot (self-reported, from a survey for ages 13 to 16)');
+  L.push('');
+  L.push('Top themes:');
+  top.forEach(function(x,i){
+    var lv=S.one['lvl_'+x.k];
+    L.push((i+1)+'. '+NAME[x.k]+' ('+x.s+' of 12)'+(lv!==undefined?' - '+LVL[+lv]:''));
+  });
+  L.push('');
+  L.push('All themes (out of 12): '+THEMES.map(function(k){return NAME[k]+' '+t[k]}).join('; '));
+  var style=STYLE.map(function(q){var v=S.one[q.g];return v===undefined?null:q.q.replace('…','')+' '+q.o[+v]}).filter(Boolean);
+  if(style.length){L.push('');L.push('Working style: '+style.join('; '))}
+  var m=pick('motiv',MOTIV),f=pick('frust',FRUST),o=pick('online',ONLINE);
+  if(m.length)L.push('Keeps me going: '+m.join('; '));
+  if(f.length)L.push('Frustrates me: '+f.join('; '));
+  if(o.length)L.push('Mostly online: '+o.join('; '));
+  if(S.txt.games)L.push('Games or apps: '+S.txt.games);
+  if(S.share){
+    var any=WORDS.filter(function(w){return S.txt[w[0]]&&S.txt[w[0]].trim()});
+    if(any.length){L.push('');L.push('In my own words:');any.forEach(function(w){L.push(w[1]);L.push(S.txt[w[0]].trim());L.push('')})}
+  }
+  return L.join('\n').trim();
+}
+function vResults(){
+  var t=score(S),top=topThemes(S,3);
+  if(!top.length){
+    return '<h2>Your snapshot</h2><p class="lead">You skipped most of the questions, so there is nothing to show yet. Go back and answer a few and your snapshot will appear here.</p><div class="nav"><button class="btn pri" type="button" data-act="edit">Go back to the questions</button></div>';
+  }
+  var cards=top.map(function(x,i){
+    var lv=S.one['lvl_'+x.k];
+    return '<article class="res" style="--c:var(--c-'+x.k+')"><h3><span class="n">'+(i+1)+'</span>'+NAME[x.k]+'</h3><p class="sub">'+BLURB[x.k]+'</p>'+
+    (lv!==undefined?'<p><b>Where you are:</b> '+LVL[+lv]+' <b>Next:</b> '+NEXT[+lv]+'</p>':'')+
+    '<p><b>Careers that use this:</b> '+CAREERS[x.k]+'</p>'+
+    '<div class="try"><div><span>Try on a screen</span><p>'+TRY[x.k][0]+'</p></div><div><span>Try off a screen</span><p>'+TRY[x.k][1]+'</p></div></div></article>';
+  }).join('');
+  var order=THEMES.slice().sort(function(a,b){return t[b]-t[a]||THEMES.indexOf(a)-THEMES.indexOf(b)});
+  var bars=order.map(function(k){return '<div class="bar" style="--c:var(--c-'+k+')"><b>'+NAME[k]+'</b><i><u style="width:'+Math.round(t[k]/12*100)+'%"></u></i><em>'+t[k]+' / 12</em></div>'}).join('');
+  var chips=function(a){return a.length?'<ul class="chips">'+a.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>':''};
+  var style=STYLE.map(function(q){var v=S.one[q.g];return v===undefined?null:q.o[+v]}).filter(Boolean);
+  var extra='';
+  if(style.length)extra+='<h4>How you like to work</h4>'+chips(style);
+  var m=pick('motiv',MOTIV),f=pick('frust',FRUST);
+  if(m.length)extra+='<h4>What keeps you going</h4>'+chips(m);
+  if(f.length)extra+='<h4>What frustrates you</h4>'+chips(f);
+  return '<h2>Your snapshot</h2><p class="lead">These are clues, not a verdict. They show how you answered today. Trying things will tell you far more than this page can.</p>'+
+  cards+
+  '<h4>All eight themes</h4><p class="hint">A gap of one or two points is too small to mean anything.</p><div class="bars">'+bars+'</div>'+extra+
+  '<h4>Share it if you want to</h4><p class="hint">Nothing has been sent anywhere. You decide what gets copied.</p>'+
+  '<div class="share"><div class="sharebar"><button class="btn pri" type="button" data-act="copy">Copy my snapshot</button><label class="opt"><input type="checkbox" id="shareText" data-t="share"><span class="box"></span><span class="txt">Include my written answers</span></label></div>'+
+  '<p class="status" id="status" role="status"></p><details id="prev"><summary>Preview what gets copied</summary><textarea id="out" readonly></textarea></details></div>'+
+  '<div class="nav"><button class="btn" type="button" data-act="edit">Change my answers</button><button class="btn" type="button" data-act="clear" id="clearbtn">Start over</button></div>'+
+  '<p class="note">This is a snapshot of how you answered today, not a test of ability. Your results can change, and that is normal.</p>';
+}
+
+var VIEWS=[vIntro,vFree,vDone,vTop,vPairs,vStyle,vWords,vResults];
+function render(){
+  view.innerHTML=VIEWS[step]();
+  Object.keys(MAX).forEach(sync);
+  if(step===3)paintRank();
+  if(step===7){var o=document.getElementById('out');if(o)o.value=summary()}
+  var segs=document.getElementById('prog').children;
+  for(var i=0;i<segs.length;i++)segs[i].className=(step>0&&i<Math.min(step,6))?'on':'';
+  document.getElementById('label').textContent=step===0?'Ages 13 to 16 · About 15 minutes':step===7?'Your snapshot':'Section '+step+' of 6 · Skip anything you like';
+}
+function sync(g){
+  var max=MAX[g];if(!max)return;
+  var n=(S.multi[g]||[]).length;
+  var ins=view.querySelectorAll('input[data-g="'+g+'"]');
+  for(var i=0;i<ins.length;i++)ins[i].disabled=!ins[i].checked&&n>=max;
+}
+function go(n){step=n;confirmClear=false;render();window.scrollTo(0,0)}
+
+view.addEventListener('change',function(e){
+  var el=e.target,t=el.dataset.t;
+  if(t==='multi'){
+    var g=el.dataset.g,a=S.multi[g]||(S.multi[g]=[]),i=a.indexOf(el.value);
+    if(el.checked&&i<0)a.push(el.value);
+    if(!el.checked&&i>=0)a.splice(i,1);
+    sync(g);
+  }else if(t==='radio'){
+    S.one[el.dataset.g]=el.value;
+  }else if(t==='share'){
+    S.share=el.checked;
+    var o=document.getElementById('out');if(o)o.value=summary();
+  }
+});
+view.addEventListener('input',function(e){
+  var el=e.target;
+  if(el.dataset.t==='text')S.txt[el.dataset.g]=el.value;
+});
+view.addEventListener('click',function(e){
+  var b=e.target.closest('[data-act]');if(!b)return;
+  var a=b.dataset.act;
+  if(a==='next')go(step+1);
+  else if(a==='back')go(step-1);
+  else if(a==='edit')go(1);
+  else if(a==='rank'){
+    var k=b.dataset.k,i=S.rank.indexOf(k);
+    if(i>=0)S.rank.splice(i,1);else if(S.rank.length<3)S.rank.push(k);
+    paintRank();
+  }else if(a==='clear'){
+    if(!confirmClear){confirmClear=true;b.textContent='Tap again to clear everything';}
+    else{S=fresh();ORD={a:[shuf(THEMES),shuf(THEMES),shuf(THEMES)],done:shuf(DONE.map(function(_,i){return i})),rank:shuf(THEMES),flip:PAIRS.map(function(){return Math.random()<.5})};go(0)}
+  }else if(a==='copy'){
+    var text=summary(),st=document.getElementById('status'),out=document.getElementById('out');
+    out.value=text;
+    var fallback=function(){document.getElementById('prev').open=true;out.focus();out.select();st.textContent='Copying did not work here. The text is selected, so you can copy it yourself.'};
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){st.textContent='Copied. Paste it wherever you want to share it.'},fallback)}
+      else fallback();
+    }catch(err){fallback()}
+  }
+});
+render();
+})();
+</script>
+
+</body></html>
